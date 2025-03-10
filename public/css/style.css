@@ -1,0 +1,273 @@
+:root {
+    --cb-highlight-bg: #0f0f17; 
+    --cb-highlight-border: rgba(255, 255, 255, 0.1);
+    --cb-highlight-btn-bg: #27273d; 
+    --cb-highlight-btn-bg-hover: #3a3a5c; 
+    --cb-highlight-btn-color: rgba(255, 255, 255, 0.75);
+    --cb-highlight-btn-color-hover: #04c8c8; 
+    --cb-highlight-scrollbar-color: #2d2d46;
+    --cb-highlight-scrollbar-color-hover: #333350;
+
+    --bs-yellow: #ffc107; 
+    --bs-font-sans-serif: 'Inter', 'Helvetica', 'Arial', sans-serif; 
+    --bs-body-font-size: 0.875rem; 
+    --bs-body-line-height: 1.5;
+}
+
+body {
+    font-family: var(--bs-font-sans-serif);
+    background-color: var(--cb-highlight-bg);
+    color: rgba(255, 255, 255, 0.9); 
+    margin: 0;
+    padding: 20px;
+    font-size: var(--bs-body-font-size);
+    line-height: var(--bs-body-line-height);
+}
+
+.navbar {
+    background-color: var(--cb-highlight-bg);
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--cb-highlight-border);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--bs-yellow) !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-toggler:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.form-results-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 20px; 
+}
+
+.form-container, .results-container {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    min-height: 300px; 
+}
+
+.card {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    background: var(--cb-highlight-btn-bg);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--cb-highlight-border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+label {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: left;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--cb-highlight-border);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+input[type="text"]:focus {
+    border-color: var(--bs-yellow);
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 193, 7, 0.3);
+}
+
+button {
+    padding: 12px 24px;
+    background: var(--cb-highlight-btn-bg);
+    border: none;
+    color: var(--cb-highlight-btn-color);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background: var(--cb-highlight-btn-bg-hover);
+    color: var(--cb-highlight-btn-color-hover);
+    transform: translateY(-2px); 
+}
+
+button i {
+    margin-right: 8px;
+}
+
+#toggleSavedEmails {
+    margin-top: 20px; 
+    width: 100%; 
+    max-width: 200px; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#toggleSavedEmails:hover {
+    background-color: #218838;
+}
+
+#generatedEmailSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#generatedEmail {
+    flex: 1; 
+    background: var(--cb-highlight-btn-bg);
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    border: 1px solid var(--cb-highlight-border);
+    color: rgba(255, 255, 255, 0.9);
+    overflow-y: auto; 
+    max-height: 400px; 
+}
+#savedEmailsSection {
+    margin-top: 20px;
+    background: var(--cb-highlight-btn-bg);
+    border: 1px solid var(--cb-highlight-border);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.list-group {
+    margin-top: 10px;
+}
+
+.list-group-item {
+    background: var(--cb-highlight-btn-bg);
+    border: 1px solid var(--cb-highlight-border);
+    margin-bottom: 10px;
+    border-radius: 8px;
+    padding: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.list-group-item:hover {
+    transform: translateY(-3px); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.edit-button, .read-more-button, .remove-button {
+    margin-right: 8px; 
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: var(--cb-highlight-btn-bg);
+    margin: 5% auto;
+    padding: 24px;
+    border: none;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+textarea {
+    resize: none;
+    height: 400px;
+    font-size: 14px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--cb-highlight-border);
+    border-radius: 8px;
+    margin-top: 12px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.close {
+    color: rgba(255, 255, 255, 0.8);
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    font-size: 28px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: rgba(255, 255, 255, 1);
+    text-decoration: none;
+    cursor: pointer;
+}
