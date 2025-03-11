@@ -81,24 +81,44 @@
         </div>
     
         <!-- Saved Emails Section -->
-        <div id="savedEmailsSection" class="card saved-emails-section hidden mt-4">
-            <div class="card-body">
-                <h3>Saved Emails</h3>
-                <ul id="savedEmails" class="list-group">
-                    @foreach ($emails as $email)
-                        <li class="list-group-item">
-                            <h4>{{ $email->subject }}</h4>
-                            <p id="emailContentPreview{{ $email->id }}">{{ implode(' ', array_slice(explode(' ', $email->content), 0, 30)) }}...</p>
-                            <p id="emailContentFull{{ $email->id }}" class="hidden" style="white-space: pre-wrap;">{{ $email->content }}</p>
-                            <button class="btn btn-warning edit-button" onclick="editEmail('{{ $email->id }}', '{{ $email->subject }}', `{{ $email->content }}`)">Edit</button>
-                            <button class="btn btn-info read-more-button" onclick="toggleFullEmail('{{ $email->id }}')">Read More</button>
-                            <button class="btn btn-danger remove-button" onclick="removeEmail('{{ $email->id }}')">Remove</button>
-                        </li>
-                    @endforeach
-                </ul>
+            <div id="savedEmailsSection" class="card saved-emails-section hidden mt-4">
+                <div class="card-body">
+                    <h3>Saved Emails</h3>
+                    <!-- Search Bar -->
+                    <div class="search-bar mb-4">
+                        <div class="input-group">
+                            <input type="text" id="searchEmails" class="form-control" placeholder="Search emails by subject..." oninput="filterEmails()">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <ul id="savedEmails" class="list-group">
+                        @foreach ($emails as $email)
+                            <li class="list-group-item email-item">
+                                <div class="email-header">
+                                    <h4 class="email-subject">{{ $email->subject }}</h4>
+                                    <div class="email-actions">
+                                        <button class="btn btn-warning btn-sm edit-button" onclick="editEmail('{{ $email->id }}', '{{ $email->subject }}', `{{ $email->content }}`)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-info btn-sm read-more-button" onclick="toggleFullEmail('{{ $email->id }}')">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm remove-button" onclick="removeEmail('{{ $email->id }}')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="email-content">
+                                    <p id="emailContentPreview{{ $email->id }}" class="email-preview">{{ implode(' ', array_slice(explode(' ', $email->content), 0, 30)) }}...</p>
+                                    <p id="emailContentFull{{ $email->id }}" class="email-full hidden">{{ $email->content }}</p>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
-        </div>
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -163,16 +183,36 @@
         }
     
         function toggleFullEmail(emailId) {
-            const previewElement = document.getElementById(`emailContentPreview${emailId}`);
-            const fullElement = document.getElementById(`emailContentFull${emailId}`);
-            if (previewElement.classList.contains('hidden')) {
-                previewElement.classList.remove('hidden');
-                fullElement.classList.add('hidden');
-            } else {
-                previewElement.classList.add('hidden');
-                fullElement.classList.remove('hidden');
-            }
+        const previewElement = document.getElementById(`emailContentPreview${emailId}`);
+        const fullElement = document.getElementById(`emailContentFull${emailId}`);
+        const readMoreButton = document.querySelector(`#emailContentPreview${emailId}`).closest('.email-item').querySelector('.read-more-button i');
+
+        if (previewElement.classList.contains('hidden')) {
+            previewElement.classList.remove('hidden');
+            fullElement.classList.add('hidden');
+            readMoreButton.classList.remove('fa-chevron-up');
+            readMoreButton.classList.add('fa-chevron-down');
+        } else {
+            previewElement.classList.add('hidden');
+            fullElement.classList.remove('hidden');
+            readMoreButton.classList.remove('fa-chevron-down');
+            readMoreButton.classList.add('fa-chevron-up');
         }
+    }
+
+        function filterEmails() {
+        const searchTerm = document.getElementById('searchEmails').value.toLowerCase();
+        const emailItems = document.querySelectorAll('.email-item');
+
+        emailItems.forEach(item => {
+            const subject = item.querySelector('.email-subject').textContent.toLowerCase();
+            if (subject.includes(searchTerm)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
     
         function editEmail(emailId, subject, content) {
             document.getElementById('editEmailId').value = emailId;
@@ -249,18 +289,19 @@
         }
     
         function toggleSavedEmails() {
-            const savedEmailsSection = document.getElementById('savedEmailsSection');
-            const toggleButton = document.getElementById('toggleSavedEmails');
-    
-            if (savedEmailsSection.classList.contains('hidden')) {
-                savedEmailsSection.classList.remove('hidden');
-                toggleButton.innerHTML = '<i class="fas fa-save"></i> Hide Saved Emails';
-                adjustContainerHeights(); 
-            } else {
-                savedEmailsSection.classList.add('hidden');
-                toggleButton.innerHTML = '<i class="fas fa-save"></i> Show Saved Emails';
-            }
+        console.log('Toggle button clicked'); // Debugging
+        const savedEmailsSection = document.getElementById('savedEmailsSection');
+        const toggleButton = document.getElementById('toggleSavedEmails');
+
+        if (savedEmailsSection.classList.contains('hidden')) {
+            savedEmailsSection.classList.remove('hidden');
+            toggleButton.innerHTML = '<i class="fas fa-save"></i> Hide Saved Emails';
+            adjustContainerHeights();
+        } else {
+            savedEmailsSection.classList.add('hidden');
+            toggleButton.innerHTML = '<i class="fas fa-save"></i> Show Saved Emails';
         }
+    }
     
         function adjustContainerHeights() {
             const formContainer = document.querySelector('.form-container');
