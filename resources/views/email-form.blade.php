@@ -54,6 +54,31 @@
         <div class="text-center mt-4">
             <button id="toggleSavedEmails" class="btn btn-success" onclick="toggleSavedEmails()"><i class="fas fa-save"></i> Show Saved Emails</button>
         </div>
+
+        <!-- Edit Email Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Edit Email</h5>
+                        <span class="close" onclick="closeEditModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editEmailForm">
+                            <input type="hidden" id="editEmailId">
+                            <div class="form-group">
+                                <label for="editEmailContent">Email Content:</label>
+                                <textarea id="editEmailContent" class="form-control" rows="10"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="saveEmail()">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     
         <!-- Saved Emails Section -->
         <div id="savedEmailsSection" class="card saved-emails-section hidden mt-4">
@@ -154,32 +179,42 @@
             document.getElementById('editEmailContent').value = content.replace(/\\'/g, "'");
             document.getElementById('editModal').style.display = 'block';
         }
-    
+
         function closeEditModal() {
             document.getElementById('editModal').style.display = 'none';
         }
     
         function saveEmail() {
-            const id = document.getElementById('editEmailId').value;
-            const content = document.getElementById('editEmailContent').value;
-    
-            fetch(`/emails/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ content })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'Email updated successfully') {
-                    location.reload();
+        const id = document.getElementById('editEmailId').value;
+        const content = document.getElementById('editEmailContent').value;
+
+        axios.put(`/emails/${id}`, { content: content })
+            .then(response => {
+                if (response.data.message === 'Email updated successfully') {
+                    swal.fire({
+                        title: 'Success',
+                        text: 'Email updated successfully!',
+                        icon: 'success'
+                    }).then(() => {
+                        closeEditModal();
+                        fetchEmails(); // Refresh the list of emails
+                    });
                 } else {
-                    alert('Failed to update email');
+                    swal.fire({
+                        title: 'Error',
+                        text: 'Failed to update email.',
+                        icon: 'error'
+                    });
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                swal.fire({
+                    title: 'Error',
+                    text: 'An error occurred while updating the email.',
+                    icon: 'error'
+                });
+                console.error('Error:', error);
+            });
         }
     
         function removeEmail(emailId) {
