@@ -299,7 +299,9 @@ button i {
     margin: 0;
     transition: opacity 0.3s ease;
 }
-
+.email-preview, .email-full {
+    margin-bottom: 0;
+}
 .email-full {
     color: rgba(255, 255, 255, 0.9);
     font-size: 14px;

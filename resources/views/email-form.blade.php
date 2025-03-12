@@ -95,26 +95,26 @@
                     </div>
                     <ul id="savedEmails" class="list-group">
                         @foreach ($emails as $email)
-                            <li class="list-group-item email-item">
-                                <div class="email-header">
-                                    <h4 class="email-subject">{{ $email->subject }}</h4>
-                                    <div class="email-actions">
-                                        <button class="btn btn-warning btn-sm edit-button" onclick="editEmail('{{ $email->id }}', '{{ $email->subject }}', `{{ $email->content }}`)">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-info btn-sm read-more-button" onclick="toggleFullEmail('{{ $email->id }}')">
-                                            <i class="fas fa-chevron-down"></i>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm remove-button" onclick="removeEmail('{{ $email->id }}')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
+                        <li class="list-group-item email-item">
+                            <div class="email-header">
+                                <h4 class="email-subject">{{ $email->subject }}</h4>
+                                <div class="email-actions">
+                                    <button class="btn btn-warning btn-sm edit-button" onclick="editEmail('{{ $email->id }}', '{{ $email->subject }}', `{{ $email->content }}`)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-info btn-sm read-more-button" onclick="toggleFullEmail('{{ $email->id }}')">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm remove-button" onclick="removeEmail('{{ $email->id }}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
-                                <div class="email-content">
-                                    <p id="emailContentPreview{{ $email->id }}" class="email-preview">{{ implode(' ', array_slice(explode(' ', $email->content), 0, 30)) }}...</p>
-                                    <p id="emailContentFull{{ $email->id }}" class="email-full hidden">{{ $email->content }}</p>
-                                </div>
-                            </li>
+                            </div>
+                            <div class="email-content">
+                                <p id="emailContentPreview{{ $email->id }}" class="email-preview">{{ implode(' ', array_slice(explode(' ', $email->content), 0, 30)) }}...</p>
+                                <p id="emailContentFull{{ $email->id }}" class="email-full hidden">{{ $email->content }}</p>
+                            </div>
+                        </li>
                         @endforeach
                     </ul>
                 </div>
@@ -161,44 +161,83 @@
         });
     
         function fetchEmails() {
-            axios.get('/emails')
-                .then(response => {
-                    let emailList = document.getElementById('savedEmails');
-                    emailList.innerHTML = '';
-                    response.data.forEach(email => {
-                        let listItem = document.createElement('li');
-                        let preview = email.content.split(' ').slice(0, 30).join(' ') + '...';
-                        listItem.innerHTML = `
-                            <h4>${email.subject}</h4>
-                            <p id="emailContentPreview${email.id}">${preview}</p>
-                            <p id="emailContentFull${email.id}" class="hidden" style="white-space: pre-wrap;">${email.content}</p>
-                            <button class="btn btn-warning edit-button" onclick="editEmail('${email.id}', '${email.subject}', \`${email.content.replace(/'/g, "\\'")}\`)">Edit</button>
-                            <button class="btn btn-info read-more-button" onclick="toggleFullEmail('${email.id}')">Read More</button>
-                            <button class="btn btn-danger remove-button" onclick="removeEmail('${email.id}')">Remove</button>
-                        `;
-                        emailList.appendChild(listItem);
-                    });
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    
+    axios.get('/emails')
+        .then(response => {
+            let emailList = document.getElementById('savedEmails');
+            emailList.innerHTML = '';
+            response.data.forEach(email => {
+                let listItem = document.createElement('li');
+                listItem.className = 'list-group-item email-item';
+                let preview = email.content.split(' ').slice(0, 30).join(' ') + '...';
+                listItem.innerHTML = `
+                    <div class="email-header">
+                        <h4 class="email-subject">${email.subject}</h4>
+                        <div class="email-actions">
+                            <button class="btn btn-warning btn-sm edit-button" onclick="editEmail('${email.id}', '${email.subject}', \`${email.content.replace(/`/g, '\\`').replace(/'/g, "\\'")}\`)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-info btn-sm read-more-button" onclick="toggleFullEmail('${email.id}')">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm remove-button" onclick="removeEmail('${email.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="email-content">
+                        <p id="emailContentPreview${email.id}" class="email-preview">${preview}</p>
+                        <p id="emailContentFull${email.id}" class="email-full hidden">${email.content}</p>
+                    </div>
+                `;
+                emailList.appendChild(listItem);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
         function toggleFullEmail(emailId) {
-        const previewElement = document.getElementById(`emailContentPreview${emailId}`);
-        const fullElement = document.getElementById(`emailContentFull${emailId}`);
-        const readMoreButton = document.querySelector(`#emailContentPreview${emailId}`).closest('.email-item').querySelector('.read-more-button i');
+    console.log(`Toggling email with ID: ${emailId}`); // Debugging
 
-        if (previewElement.classList.contains('hidden')) {
-            previewElement.classList.remove('hidden');
-            fullElement.classList.add('hidden');
-            readMoreButton.classList.remove('fa-chevron-up');
-            readMoreButton.classList.add('fa-chevron-down');
-        } else {
-            previewElement.classList.add('hidden');
-            fullElement.classList.remove('hidden');
-            readMoreButton.classList.remove('fa-chevron-down');
-            readMoreButton.classList.add('fa-chevron-up');
-        }
+    const previewElement = document.getElementById(`emailContentPreview${emailId}`);
+    const fullElement = document.getElementById(`emailContentFull${emailId}`);
+
+    // Check if elements exist
+    if (!previewElement || !fullElement) {
+        console.error(`Elements not found for email ID: ${emailId}`); // Debugging
+        return;
+    }function toggleFullEmail(emailId) {
+    const previewElement = document.getElementById(`emailContentPreview${emailId}`);
+    const fullElement = document.getElementById(`emailContentFull${emailId}`);
+    
+    // Check if elements exist
+    if (!previewElement || !fullElement) {
+        console.error(`Elements not found for email ID: ${emailId}`);
+        return;
     }
+    
+    // Find the button within the closest email-item parent
+    const emailItem = previewElement.closest('.email-item');
+    const readMoreButton = emailItem.querySelector('.read-more-button i');
+    
+    if (!readMoreButton) {
+        console.error('Read more button not found!');
+        return;
+    }
+    
+    // Toggle the visibility
+    if (fullElement.classList.contains('hidden')) {
+        // Show full content
+        previewElement.classList.add('hidden');
+        fullElement.classList.remove('hidden');
+        readMoreButton.classList.remove('fa-chevron-down');
+        readMoreButton.classList.add('fa-chevron-up');
+    } else {
+        // Show preview
+        previewElement.classList.remove('hidden');
+        fullElement.classList.add('hidden');
+        readMoreButton.classList.remove('fa-chevron-up');
+        readMoreButton.classList.add('fa-chevron-down');
+    }
+}}
 
         function filterEmails() {
         const searchTerm = document.getElementById('searchEmails').value.toLowerCase();
