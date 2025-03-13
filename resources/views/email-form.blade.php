@@ -31,11 +31,11 @@
                     <form id="emailForm">
                         <div class="form-group">
                             <label for="subject">Enter Email Subject:</label>
-                            <input type="text" id="subject" name="subject" class="form-control" placeholder="Type here..." required>
+                            <input type="text" id="subject" name="subject" class="form-control" placeholder="Enter email subject..." required>
                         </div>
                         <div class="form-group">
                             <label for="keywords">Enter Keywords (Optional):</label>
-                            <input type="text" id="keywords" name="keywords" class="form-control" placeholder="Type here...">
+                            <input type="text" id="keywords" name="keywords" class="form-control" placeholder="Include keywords...">
                         </div>
                         <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Generate Email</button>
                     </form>
