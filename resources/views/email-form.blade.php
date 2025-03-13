@@ -125,7 +125,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         document.getElementById('emailForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the form from submitting normally
+            event.preventDefault(); 
             let subject = document.getElementById('subject').value;
             let keywords = document.getElementById('keywords').value;
     
@@ -147,7 +147,7 @@
                         icon: 'success'
                     });
                     document.getElementById('generatedEmail').innerText = response.data.email_content;
-                    adjustContainerHeights(); // Adjust container heights after generating email
+                    adjustContainerHeights(); 
                     fetchEmails();
                 })
                 .catch(error => {
@@ -194,27 +194,17 @@
         })
         .catch(error => console.error('Error:', error));
 }
-        function toggleFullEmail(emailId) {
-    console.log(`Toggling email with ID: ${emailId}`); // Debugging
+function toggleFullEmail(emailId) {
+    console.log(`Toggling email with ID: ${emailId}`);
 
-    const previewElement = document.getElementById(`emailContentPreview${emailId}`);
-    const fullElement = document.getElementById(`emailContentFull${emailId}`);
-
-    // Check if elements exist
-    if (!previewElement || !fullElement) {
-        console.error(`Elements not found for email ID: ${emailId}`); // Debugging
-        return;
-    }function toggleFullEmail(emailId) {
     const previewElement = document.getElementById(`emailContentPreview${emailId}`);
     const fullElement = document.getElementById(`emailContentFull${emailId}`);
     
-    // Check if elements exist
     if (!previewElement || !fullElement) {
         console.error(`Elements not found for email ID: ${emailId}`);
         return;
     }
     
-    // Find the button within the closest email-item parent
     const emailItem = previewElement.closest('.email-item');
     const readMoreButton = emailItem.querySelector('.read-more-button i');
     
@@ -223,21 +213,18 @@
         return;
     }
     
-    // Toggle the visibility
     if (fullElement.classList.contains('hidden')) {
-        // Show full content
         previewElement.classList.add('hidden');
         fullElement.classList.remove('hidden');
         readMoreButton.classList.remove('fa-chevron-down');
         readMoreButton.classList.add('fa-chevron-up');
     } else {
-        // Show preview
         previewElement.classList.remove('hidden');
         fullElement.classList.add('hidden');
         readMoreButton.classList.remove('fa-chevron-up');
         readMoreButton.classList.add('fa-chevron-down');
     }
-}}
+}
 
         function filterEmails() {
         const searchTerm = document.getElementById('searchEmails').value.toLowerCase();
@@ -276,7 +263,7 @@
                         icon: 'success'
                     }).then(() => {
                         closeEditModal();
-                        fetchEmails(); // Refresh the list of emails
+                        fetchEmails();
                     });
                 } else {
                     swal.fire({
@@ -328,7 +315,7 @@
         }
     
         function toggleSavedEmails() {
-        console.log('Toggle button clicked'); // Debugging
+        console.log('Toggle button clicked'); 
         const savedEmailsSection = document.getElementById('savedEmailsSection');
         const toggleButton = document.getElementById('toggleSavedEmails');
 
