@@ -77,7 +77,9 @@ body {
     flex-direction: column;
     min-height: 300px; 
 }
-
+.card, .email-item, .modal-content {
+    transition: all 0.3s ease-in-out;
+}
 .card {
     flex: 1; 
     display: flex;
@@ -152,16 +154,37 @@ button i {
 }
 
 #toggleSavedEmails {
-    margin-top: 20px; 
-    width: 100%; 
-    max-width: 200px; 
+    margin-top: 20px;
+    width: 100%;
+    max-width: 220px;
     margin-left: auto;
     margin-right: auto;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #28a745, #218838);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 255, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+#toggleSavedEmails i {
+    font-size: 18px;
 }
 
 #toggleSavedEmails:hover {
-    background-color: #218838;
+    background: linear-gradient(45deg, #218838, #1e7e34);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 255, 0, 0.4);
 }
+
 
 #generatedEmailSection {
     flex: 1;
@@ -451,7 +474,28 @@ button i {
     background: #e0a800;
     transform: translateY(-2px);
 }
+/* Email wrapper */
+.email-wrapper {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+}
+#loadingSpinner {
+    margin: 20px 0;
+}
 
+/* Copy button */
+#copyEmailButton {
+    background: var(--cb-highlight-btn-bg);
+    border: 1px solid var(--cb-highlight-border);
+    color: var(--cb-highlight-btn-color);
+}
+
+#copyEmailButton:hover {
+    background: var(--cb-highlight-btn-bg-hover);
+    color: var(--cb-highlight-btn-color-hover);
+}
 textarea {
     resize: none;
     height: 400px;
